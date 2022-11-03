@@ -16,5 +16,5 @@ from PIL import Image
 #
 #
 #     cv2.imshow()
-cv2.
+
 # img = cv2.imread("");

@@ -1,27 +1,78 @@
 import cv2
-import os 
-import glob
-import imutils
+import matplotlib.pyplot as plt
+import numpy as np 
 
+pantentClassifier = cv2.CascadeClassifier('imgPatentes\classifier\cascade.xml')
 cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)
-majinBooClassif = cv2.CascadeClassifier('cascade.xml')
+# cap = cv2.VideoCapture("autos.mp4")
+# image = cv2.imread('imgPatentes\p\carro.jpg')
+# gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+
+# patentes = pantentClassifier.detectMultiScale(gray,
+#   scaleFactor=1.3,
+#   minNeighbors=5,
+#   minSize=(20,6),
+#   maxSize=(800,260))
+
+# for (x,y,w,h) in patentes:
+#   cv2.rectangle(image,(x,y),(x+w,y+h),(0,255,0),2)
+
+# cv2.imshow('image',image)
+# cv2.waitKey(0)
+# cv2.destroyAllWindows()
+
+
+
+
 while True:
     
     ret,frame = cap.read()
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    toy = majinBooClassif.detectMultiScale(gray,
-    scaleFactor = 5,
-    minNeighbors = 91,
-    minSize=(70,78))
+
+    toy = pantentClassifier.detectMultiScale(gray,
+  scaleFactor=1.2,
+  minNeighbors=30,
+  minSize=(20,6),
+  maxSize=(150,60)
+  )
+
     for (x,y,w,h) in toy:
         cv2.rectangle(frame, (x,y),(x+w,y+h),(0,255,0),2)
-        cv2.putText(frame,'Majin Boo',(x,y-10),2,0.7,(0,255,0),2,cv2.LINE_AA)
+        cv2.putText(frame,'Patente',(x,y-10),2,0.7,(0,255,0),2,cv2.LINE_AA)
+
     cv2.imshow('frame',frame)
     
     if cv2.waitKey(1) == 27:
         break
 cap.release()
 cv2.destroyAllWindows()
+
+
+
+# import cv2
+# import os 
+# import glob
+# import imutils
+
+# cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)
+# majinBooClassif = cv2.CascadeClassifier('cascade.xml')
+# while True:
+    
+#     ret,frame = cap.read()
+#     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+#     toy = majinBooClassif.detectMultiScale(gray,
+#     scaleFactor = 5,
+#     minNeighbors = 91,
+#     minSize=(70,78))
+#     for (x,y,w,h) in toy:
+#         cv2.rectangle(frame, (x,y),(x+w,y+h),(0,255,0),2)
+#         cv2.putText(frame,'Majin Boo',(x,y-10),2,0.7,(0,255,0),2,cv2.LINE_AA)
+#     cv2.imshow('frame',frame)
+    
+#     if cv2.waitKey(1) == 27:
+#         break
+# cap.release()
+# cv2.destroyAllWindows()
 
 
 
