@@ -1,10 +1,14 @@
 import cv2
 import matplotlib.pyplot as plt
 import numpy as np 
+import time
+import pytesseract 
+from PIL import Image
+
 
 pantentClassifier = cv2.CascadeClassifier('imgPatentes\classifier\cascade.xml')
-cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)
-# cap = cv2.VideoCapture("autos.mp4")
+# cap = cv2.VideoCapture(2,cv2.CAP_DSHOW)
+cap = cv2.VideoCapture("Fotos sacadas por mi\patentes2.mkv")
 # image = cv2.imread('imgPatentes\p\carro.jpg')
 # gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -27,26 +31,35 @@ cap = cv2.VideoCapture(0,cv2.CAP_DSHOW)
 while True:
     
     ret,frame = cap.read()
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    #gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    toy = pantentClassifier.detectMultiScale(gray,
-  scaleFactor=1.2,
-  minNeighbors=30,
-  minSize=(20,6),
-  maxSize=(150,60)
+    toy = pantentClassifier.detectMultiScale(frame,
+   scaleFactor=1.2,
+   minNeighbors=30,
+   minSize=(40,13),
+   maxSize=(300,100)
   )
 
+    pytesseract.pytesseract.tesseract_cmd = r'C:\Users\Roman\AppData\Local\Tesseract-OCR\tesseract.exe'
     for (x,y,w,h) in toy:
-        cv2.rectangle(frame, (x,y),(x+w,y+h),(0,255,0),2)
+        rectangulo = cv2.rectangle(frame, (x-10,y),(x+w,y+h),(0,255,0),2)
         cv2.putText(frame,'Patente',(x,y-10),2,0.7,(0,255,0),2,cv2.LINE_AA)
+        # print("x=",x,"y=",y,"w=",w,"x+w=",x+w,"h+y=",h+y)
+        objeto = frame[y:y+h,x:x+w]
+        cv2.imshow('rect',objeto)
+        texto = pytesseract.pytesseract.image_to_string(objeto, config="--psm 1")
+        print(texto)
+        # print(pytesseract.get_languages(config=''))
+        time.sleep(0.01)
 
+        
+    time.sleep(0.01)
     cv2.imshow('frame',frame)
     
     if cv2.waitKey(1) == 27:
         break
 cap.release()
 cv2.destroyAllWindows()
-
 
 
 # import cv2
