@@ -6,9 +6,10 @@ import pytesseract
 from PIL import Image
 
 
-pantentClassifier = cv2.CascadeClassifier('imgPatentes\classifier\cascade.xml')
+pantentClassifier = cv2.CascadeClassifier('Cascada 3\classifier\cascade.xml')
 # cap = cv2.VideoCapture(2,cv2.CAP_DSHOW)
-cap = cv2.VideoCapture("Fotos sacadas por mi\patentes2.mkv")
+cap = cv2.VideoCapture("screen.mp4")
+#cap = cv2.VideoCapture("autos.mp4")
 # image = cv2.imread('imgPatentes\p\carro.jpg')
 # gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
@@ -31,26 +32,31 @@ cap = cv2.VideoCapture("Fotos sacadas por mi\patentes2.mkv")
 while True:
     
     ret,frame = cap.read()
-    #gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    toy = pantentClassifier.detectMultiScale(frame,
+    toy = pantentClassifier.detectMultiScale(gray,
    scaleFactor=1.2,
-   minNeighbors=30,
-   minSize=(40,13),
-   maxSize=(300,100)
+   minNeighbors=80,
+   minSize=(80,30),
+   maxSize=(800,500)
   )
 
     pytesseract.pytesseract.tesseract_cmd = r'C:\Users\Roman\AppData\Local\Tesseract-OCR\tesseract.exe'
     for (x,y,w,h) in toy:
-        rectangulo = cv2.rectangle(frame, (x-10,y),(x+w,y+h),(0,255,0),2)
+        rectangulo = cv2.rectangle(frame, (x,y),(x+w,y+h),(0,255,0),2)
         cv2.putText(frame,'Patente',(x,y-10),2,0.7,(0,255,0),2,cv2.LINE_AA)
         # print("x=",x,"y=",y,"w=",w,"x+w=",x+w,"h+y=",h+y)
         objeto = frame[y:y+h,x:x+w]
-        cv2.imshow('rect',objeto)
-        texto = pytesseract.pytesseract.image_to_string(objeto, config="--psm 1")
-        print(texto)
-        # print(pytesseract.get_languages(config=''))
-        time.sleep(0.01)
+        aspect_ratio = float(w)/float(h)
+        if aspect_ratio > float(2.5) and aspect_ratio < float(3.2):
+            cv2.imshow('rect',objeto)
+            texto = pytesseract.pytesseract.image_to_string(objeto, config="--psm 11")
+            print(texto)
+            # print(pytesseract.get_languages(config=''))
+            time.sleep(0.01)
+            print('Cumple')
+        
+       
 
         
     time.sleep(0.01)

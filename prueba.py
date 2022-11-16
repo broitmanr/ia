@@ -1,37 +1,20 @@
-import cv2
-from matplotlib import pyplot as plt
+# import cv2 
+# import pytesseract
 
-img = cv2.imread("image.jpg")
-img_gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-img_rgb = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
+# pytesseract.pytesseract.tesseract_cmd=r'C:\Users\Roman\AppData\Local\Tesseract-OCR\tesseract.exe'
 
-  
-# Use minSize because for not 
-# bothering with extra-small 
-# dots that would look like STOP signs
-stop_data = cv2.CascadeClassifier('stop_data.xml')
-  
-found = stop_data.detectMultiScale(img_gray, 
-                                   minSize =(20, 20))
-  
-# Don't do anything if there's 
-# no sign
-amount_found = len(found)
-  
-if amount_found != 0:
-      
-    # There may be more than one
-    # sign in the image
-    for (x, y, width, height) in found:
-          
-        # We draw a green rectangle around
-        # every recognized sign
-        cv2.rectangle(img_rgb, (x, y), 
-                      (x + height, y + width), 
-                      (0, 255, 0), 5)
-          
-# Creates the environment of 
-# the picture and shows it
-plt.subplot(1, 1, 1)
-plt.imshow(img_rgb)
-plt.show()
+# placa=[]
+# image=cv2.imread("imgPatentes\p\IMG8.jpg")
+# gray = cv2.cvtColor(image,cv2.COLOR_BGR2GRAY)
+# gray= cv2.blur(gray,(3,3))
+# canny = cv2.Canny(gray,150,200)
+# canny = cv2.dilate(canny,None,iterations=1)
+
+# cnts,_ = cv2.findContours(canny,cv2.RETR_LIST,cv2.CHAIN_APPROX_SIMPLE)
+# cv2.drawContours(image,cnts,-1,(0,255,0),2)
+# cv2.imshow('imagen',image)
+# cv2.imshow('Canny',canny)
+# cv2.moveWindow('imagen',45,10)
+# cv2.waitKey(0)
+
+print(float(2.3)/float(3.3))
